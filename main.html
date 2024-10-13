@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <title>"AP Commuteications</title>
+        <meta charset="UTF-8"/>
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" 
+        type= "text/javascript" 
+        charset="UTF-8">
+        </script>
+        <script src ="https://js.api.here.com/v3/3.1/mapsjs-service.js" 
+        type="text/javascript"
+        charset="UTF-8">
+        <link rel="stylsheet" 
+        href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" 
+        type="text/css"/>
+
+        </script> 
+    </head> 
+    <body>
+        <div id ="map" style="width: 600px; height: 400px;"></div>
+        <div>
+            <label for="rating">
+                <select id="rating">
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Star</option>
+                    <option value="3">3 Star</option>
+                    <option value="4">4 Star</option>
+                    <option value="5">5 Star</option>
+                </select>
+                <button onclick="submitRating()">Submit
+                </button>
+        
+            </label>
+        </div>
+        <script>
+            const platform = new H.service.Platform({apikey: "eniHLMBmJOSphrUKEEGw5jqy2hUolj5pYa_Mzd4v_0"});
+            const defaultLayers = platform.createDefaultLayers();
+            const map = new H.map(
+                document.getElementById('map'),
+                defaultLayers.vector.normal.map,
+                {
+                    zoom: 10,
+                    center: {lat: 52.5, lng: 13.4}
+                }
+            );
+            function submitRating(){
+                const rating = 
+                document.getElementById('rating').value;
+                fetch('/submit-rating',{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({rating: rating, 
+                    routeId: 'exampleRouteId'})
+                })
+                .then(response => response.json())
+                .then(data=>{
+                    console.log('Success:', data);
+                
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+            
+            
+        </script>
+    </body>
+</html>
